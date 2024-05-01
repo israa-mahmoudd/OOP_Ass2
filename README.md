@@ -2,6 +2,8 @@
 #include <string>
 #include <fstream>
 #include <limits>
+#include <vector>
+#include <algorithm>
 
 using namespace std;
 
@@ -173,7 +175,7 @@ public:
         return highest;
     }
 
-    friend ostream& operator<<(ostream& os, const NationalTeam& team) {
+   friend ostream& operator<<(ostream& os, const NationalTeam& team) {
     os << "Country: " << team.country << endl;
     for (int i = 0; i < 18; ++i) {
         if (team.active[i]) {
@@ -186,6 +188,7 @@ public:
     return os;
 }
 
+
     void writeStatistics(ofstream& outFile) const {
         outFile << "Team Country: " << country << endl;
         outFile << "Number of players: " << getNumOfPlayers() << endl;
@@ -197,5 +200,30 @@ public:
         outFile << "Average number of international goals of players: " << AvgIntGoals() << endl;
         Player highestGoals = highestIntGoals();
         outFile << "Player with the highest international goals: " << highestGoals.getName() << " (" << highestGoals.getInternationalGoals() << " goals)" << endl;
+    }
+
+vector<Player> readPlayersFromFile(ifstream& read) {
+        vector<Player> players;
+        int numPlayers;
+        if (read.is_open()) {
+            read >> numPlayers;
+            read.ignore(numeric_limits<streamsize>::max(), '\n');
+
+            for (int i = 0; i < numPlayers; ++i) {
+                string playerName, nationality;
+                int yearOfBirth, height, internationalGoals;
+                if (getline(read, playerName, ',') &&
+                    read >> yearOfBirth >> height >> internationalGoals >> nationality) {
+                    players.emplace_back(playerName, yearOfBirth, height, internationalGoals, nationality);
+                } else {
+                    cerr << "Error: Invalid player information in file." << endl;
+                    break;
+                }
+                read.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
+        } else {
+            cerr << "Error: File is closed." << endl;
+        }
+        return players;
     }
 };
