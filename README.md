@@ -173,15 +173,18 @@ public:
         return highest;
     }
 
-    friend ostream& operator<<(ostream& os, const NationalTeam& team) {
-        os << "Country: " << team.country << endl;
-        for (int i = 0; i < 18; ++i) {
-            if (team.active[i]) {
-                os << "Player Name: " << team.players[i]->getName() << ", Year of Birth: " << team.players[i]->getYearOfBirth() << endl;
-            }
+    friend std::ostream& operator<<(std::ostream& os, const NationalTeam& team) {
+    os << "Country: " << team.country << std::endl;
+    for (int i = 0; i < 18; ++i) {
+        if (team.active[i]) {
+            const Player* player = team.players[i];
+            os << "Player Name: " << player->getName() << ", Year of Birth: " << player->getYearOfBirth() 
+               << ", Height: " << player->getHeight() << " cm, International Goals: " << player->getInternationalGoals()
+               << ", Nationality: " << player->getNationality() << std::endl;
         }
-        return os;
     }
+    return os;
+}
 
     void writeStatistics(ofstream& outFile) const {
         outFile << "Team Country: " << country << endl;
