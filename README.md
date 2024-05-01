@@ -173,14 +173,14 @@ public:
         return highest;
     }
 
-    friend std::ostream& operator<<(std::ostream& os, const NationalTeam& team) {
+    friend ostream& operator<<(ostream& os, const NationalTeam& team) {
     os << "Country: " << team.country << std::endl;
     for (int i = 0; i < 18; ++i) {
         if (team.active[i]) {
             const Player* player = team.players[i];
             os << "Player Name: " << player->getName() << ", Year of Birth: " << player->getYearOfBirth() 
                << ", Height: " << player->getHeight() << " cm, International Goals: " << player->getInternationalGoals()
-               << ", Nationality: " << player->getNationality() << std::endl;
+               << ", Nationality: " << player->getNationality() << endl;
         }
     }
     return os;
