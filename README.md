@@ -174,7 +174,7 @@ public:
     }
 
     friend ostream& operator<<(ostream& os, const NationalTeam& team) {
-    os << "Country: " << team.country << std::endl;
+    os << "Country: " << team.country << endl;
     for (int i = 0; i < 18; ++i) {
         if (team.active[i]) {
             const Player* player = team.players[i];
